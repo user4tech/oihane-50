@@ -5,12 +5,12 @@
 
   var EXPERIENCES = {
     yoga: {
-      name: "El corazón del yoga",
-      places: "Delhi, Agra y Rishikesh"
+      name: "El viaje hacia tu interior",
+      places: "Rishikesh, India"
     },
     naturaleza: {
-      name: "Naturaleza y bienestar",
-      places: "Kerala y Munnar"
+      name: "Un regalo para cuerpo y alma",
+      places: "Kerala, Rishikesh, Delhi y Agra, según itinerario"
     }
   };
 
@@ -93,11 +93,9 @@
   }
 
   function choiceMessage(id, saved) {
-    var exp = EXPERIENCES[id];
-    if (saved) {
-      return exp.name + ". Esta experiencia ha quedado marcada como tu favorita en este dispositivo. Cuando quieras, organizamos juntos los detalles.";
-    }
-    return exp.name + ". Ha quedado marcada durante esta visita: este navegador no ha permitido guardarla en el dispositivo. Cuando quieras, organizamos juntos los detalles.";
+    var message = "¡Qué buena elección, Oihane! Esta es la experiencia que más te ilusiona. Ahora podremos elegir el retiro, las fechas y todos esos pequeños detalles que harán que el viaje sea exactamente como tú lo imaginas. Lo importante es que este regalo es tuyo y está pensado para que lo disfrutes a tu manera.";
+    if (saved) return message;
+    return message + " En esta visita ha quedado marcada, aunque este navegador no ha permitido guardarla en el dispositivo.";
   }
 
   function choicePlainText() {
@@ -109,7 +107,7 @@
       "Experiencia que me ilusiona: " + exp.name,
       "Lugares: " + exp.places,
       "",
-      "Preferencia guardada solo en este dispositivo. Los detalles del viaje se organizan después, juntos."
+      "Preferencia guardada solo en este dispositivo. El viaje se organiza cuando elijas el programa."
     ].join("\n");
   }
 
