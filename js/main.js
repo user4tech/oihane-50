@@ -223,6 +223,67 @@
     return confettiPromise;
   }
 
+  function launchConfetti(confetti, originY) {
+    confetti({
+      particleCount: 50,
+      spread: 58,
+      startVelocity: 24,
+      gravity: 0.9,
+      ticks: 170,
+      scalar: 0.78,
+      origin: { x: 0.5, y: originY },
+      colors: ["#C86D51", "#D8AE65", "#FDFBF7", "#89977B", "#E8C98A"],
+      disableForReducedMotion: true,
+      zIndex: 1000
+    });
+  }
+
+  function celebrateJourney() {
+    if (prefersReduced()) return;
+    loadConfetti().then(function (confetti) {
+      if (prefersReduced()) return;
+      launchConfetti(confetti, 0.28);
+    }).catch(function () {
+      /* El mensaje final sigue apareciendo si el confeti no carga. */
+    });
+  }
+
+  function resetJourney() {
+    var note = document.getElementById("aventura");
+    var button = document.getElementById("empezar");
+    if (note) {
+      note.hidden = true;
+      note.classList.remove("is-shown");
+    }
+    if (button) {
+      button.classList.remove("is-celebrating");
+      button.setAttribute("aria-expanded", "false");
+    }
+  }
+
+  function beginJourney() {
+    var note = document.getElementById("aventura");
+    var button = document.getElementById("empezar");
+    if (!note || !button) return;
+    button.classList.add("is-celebrating");
+    button.setAttribute("aria-expanded", "true");
+    note.hidden = false;
+    note.classList.remove("is-shown");
+    if (!prefersReduced()) {
+      void note.offsetWidth;
+    }
+    note.classList.add("is-shown");
+    announce("¡Tu aventura comienza aquí, Oihane! El primer paso de esta aventura ya está en marcha.");
+    celebrateJourney();
+    later(function () {
+      button.classList.remove("is-celebrating");
+    }, 900);
+    note.scrollIntoView({
+      behavior: prefersReduced() ? "auto" : "smooth",
+      block: "nearest"
+    });
+  }
+
   function celebrate() {
     if (prefersReduced() || phase !== "open") return;
     loadConfetti().then(function (confetti) {
@@ -232,17 +293,7 @@
         var rect = reveal.getBoundingClientRect();
         originY = Math.min(0.42, Math.max(0.12, (rect.top + rect.height * 0.22) / window.innerHeight));
       }
-      confetti({
-        particleCount: 50,
-        spread: 58,
-        startVelocity: 24,
-        gravity: 0.9,
-        ticks: 170,
-        scalar: 0.78,
-        origin: { x: 0.5, y: originY },
-        colors: ["#C86D51", "#D8AE65", "#FDFBF7", "#89977B", "#E8C98A"],
-        disableForReducedMotion: true
-      });
+      launchConfetti(confetti, originY);
     }).catch(function () {
       /* La revelación sigue siendo válida si el confeti no carga. */
     });
@@ -318,7 +369,7 @@
     if (details) details.open = true;
     if (reveal) reveal.classList.add("is-revealed");
     dismissSummary();
-    announce("Namasté, Oihane. Nos vamos a la India.");
+    announce("Namasté, Oihane. Te vas a la India.");
     scrollToId("revelacion");
     focusSaludo();
     enhanceReveals(details);
@@ -347,7 +398,7 @@
       if (phase !== "opening") return;
       phase = "open";
       dismissSummary();
-      announce("Namasté, Oihane. Nos vamos a la India.");
+      announce("Namasté, Oihane. Te vas a la India.");
       focusSaludo();
       enhanceReveals(details);
       celebrate();
@@ -356,6 +407,7 @@
 
   function replaySurprise() {
     clearTimers();
+    resetJourney();
     phase = "closed";
     if (details) details.open = false;
     if (envelope) envelope.classList.remove("is-opening", "is-open");
@@ -433,6 +485,11 @@
       event.preventDefault();
       replaySurprise();
     });
+  }
+
+  var empezar = document.getElementById("empezar");
+  if (empezar) {
+    empezar.addEventListener("click", beginJourney);
   }
 
   var stored = readPref();

@@ -904,8 +904,58 @@ summary.btn::marker {
   font-size: 1.35rem;
 }
 
+.journey {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 2.75rem;
+}
+
+#empezar {
+  min-width: min(100%, 16.5rem);
+  padding-inline: 1.85rem;
+  box-shadow: 0 0 0 0 transparent;
+  transition: background-color 0.2s var(--ease), color 0.2s var(--ease), box-shadow 0.35s var(--ease), transform 0.2s var(--ease);
+}
+
+#empezar.is-celebrating {
+  box-shadow: 0 0 0 1px var(--gold);
+}
+
+.journey__note {
+  width: min(100%, 26rem);
+  margin-top: 1.85rem;
+}
+
+.journey__lead {
+  margin-bottom: 1rem;
+  font-size: clamp(1.7rem, 5.4vw, 2.15rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.journey__note p {
+  margin-bottom: 0.8rem;
+}
+
+.journey__wish {
+  margin-top: 0.35rem;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.35rem;
+}
+
+.journey__step {
+  margin-top: 1.35rem;
+  font-family: var(--sans);
+  font-size: 0.84rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  color: rgba(253, 251, 247, 0.68);
+}
+
 #reiniciar {
-  margin-top: 2rem;
+  margin-top: 2.4rem;
 }
 
 /* Motion */
@@ -922,6 +972,14 @@ summary.btn::marker {
 }
 
 @media (prefers-reduced-motion: no-preference) {
+  #empezar:active {
+    transform: translateY(1px);
+  }
+
+  .journey__note.is-shown {
+    animation: rise 0.9s var(--ease) both;
+  }
+
   .hero__content > * {
     animation: rise 0.95s var(--ease) both;
   }
